@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+
+<p id="demo"></p>
+<canvas id="TutorialCanvas" width="500" height="500"></canvas>
+
+<script type="text/javascript" src="particle.js">
+	</script>
+<script>
+	document.getElementById("demo").innerHTML = "Hello World!";
+	var context = document.getElementById('TutorialCanvas').getContext("2d");
+	var canvas = document.getElementById('TutorialCanvas');
+	var particleArray = [];
+	var count = 0;
+	var startParticle = new Particle(100, 100, 1, 1, 0, 0, 10);
+	particleArray.push(startParticle);
+		window.setTimeout(animate, 100);
+	function animate() {
+		context.clearRect(0, 0, 500,500);
+		var p;
+		var p2;
+		for (i = 0; i < particleArray.length; i++) {
+			p = particleArray[i];
+			//checks for particle collissions
+			for (j = 0; j < particleArray.length; j++) {
+				var p2 = particleArray[j];
+				if (i != j) {
+					p.particleCollide(p2);
+				}
+			}
+			p.applyForces();
+			p.wallCollide();
+			p.move();
+			context.fillStyle = 'blue';
+			p.draw(canvas, context);
+		}
+		count += 10;
+		if ((count == 100) && (particleArray.length < 500)){
+			count = 0;
+			var newP = new Particle(100, 100, 1, 1, 0, 0, 10);
+			particleArray.push(newP);
+		}
+		window.setTimeout(animate, 10);
+		return;
+	}
+	</script>
+</body>
+</html> 
